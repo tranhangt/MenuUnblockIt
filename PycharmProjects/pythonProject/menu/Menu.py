@@ -65,7 +65,7 @@ class MainMenu(Menu):
 class LevelMenu(Menu):
     def __init__(self, game):
         super().__init__(game)
-        self.homex, self.homey = self.game.DISPLAY_W / 2, self.game.DISPLAY_H - 100
+        self.homex, self.homey = self.game.DISPLAY_W / 2 - 30, self.game.DISPLAY_H - 100
         self.levelx, self.levely = 100, 100
         self.btn_home = Button(self.game, (self.homex, self.homey), "btn_home.png", 0, 0)
         self.btn_level = Button(self.game, (self.levelx, self.levely), "level_lock.png", 0, 0)
@@ -85,10 +85,12 @@ class LevelMenu(Menu):
                     else:
                         self.btn_level = Button(self.game, (self.levelx + xx * 90, self.levely + yy * 90), "level_lock.png", self.curr_level, 0)
                     self.btn_level.draw()
+                    # self.btn_level.draw_text(str(self.curr_level), 15)
                     if self.btn_level.isDone == 1 and self.btn_level.check_collidepoint():
                         if self.game.click:
                             self.game.curr_menu = self.game.player_menu
                             self.run_display = False
+                    self.curr_level += 1
             self.blit_screen()
 
     def check_input(self):
@@ -114,8 +116,10 @@ class PlayerMenu(Menu):
             self.game.check_events()
             self.check_input()
             self.back_ground.draw()
+
             self.btn_home.draw()
             self.btn_reload.draw()
+
             self.blit_screen()
 
     def check_input(self):
@@ -138,6 +142,7 @@ class OptionsMenu(Menu):
         self.state = "Volume"
         self.soundx, self.soundy = self.mid_w - 150, self.mid_h - 30
         self.musicx, self.musicy = self.mid_w - 150, self.mid_h + 60
+        self.setting = Button(game, (self.game.DISPLAY_W / 2 - 150, self.game.DISPLAY_H / 2 - 200), "setting.png", 0, 0)
 
         self.btn_save = Button(game, (self.musicx + 35, self.musicy + 90), "btn_save.png", 0, 0)
 
@@ -156,6 +161,7 @@ class OptionsMenu(Menu):
             self.game.draw_text("Options", 60, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 - 100)
 
             self.back_ground.draw()
+            self.setting.draw()
 
             self.btn_txt_sound.draw()
             self.btn_txt_music.draw()
@@ -190,19 +196,29 @@ class OptionsMenu(Menu):
 class CreditsMenu(Menu):
     def __init__(self, game):
         super().__init__(game)
+        self.about = Button(game, (self.game.DISPLAY_W / 2 - 150, self.game.DISPLAY_H / 2 - 200), "about.png", 0, 0)
+        self.btn_home = Button(self.game, (self.game.DISPLAY_W / 2 - 30, self.game.DISPLAY_H - 100), "btn_home.png", 0, 0)
 
     def display_menu(self):
         self.run_display = True
         while self.run_display:
             self.game.check_events()
+            self.check_input()
             if self.game.START_KEY or self.game.BACK_KEY:
                 self.game.curr_menu = self.game.main_menu
                 self.run_display = False
 
             self.back_ground.draw()
 
-            self.game.draw_text("Credits", 30, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 - 30)
+            # self.game.draw_text("Credits", 30, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 - 30)
+            self.about.draw()
+            self.btn_home.draw()
             self.game.draw_text("Made by Group 1", 15, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 + 10)
             self.blit_screen()
 
-
+    def check_input(self):
+        if self.btn_home.check_collidepoint():
+            if self.game.click:
+                print("click home")
+                self.game.curr_menu = self.game.main_menu
+                self.run_display = False
