@@ -10,12 +10,16 @@ class Game:
         self.DISPLAY_W, self.DISPLAY_H = 900, 600
         self.display = pygame.Surface((self.DISPLAY_W, self.DISPLAY_H))
         self.window = pygame.display.set_mode(((self.DISPLAY_W, self.DISPLAY_H)))
+        self.back_ground = pygame.image.load("image/wood.jpg")
+
         self.font_name = pygame.font.get_default_font()
         self.BLACK, self.WHITE = (0, 0, 0), (255, 255, 255)
         self.click = False
         self.main_menu = MainMenu(self)
         self.options = OptionsMenu(self)
         self.credits = CreditsMenu(self)
+        self.level_menu = LevelMenu(self)
+        self.player_menu = PlayerMenu(self)
         self.curr_menu = self.main_menu
 
     def game_loop(self):
